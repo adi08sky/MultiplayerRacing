@@ -16,12 +16,6 @@ public class CheckPointController : MonoBehaviour
         pointCount = checkpoints.Length;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "CheckPoint")
