@@ -1,23 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class RaceController : MonoBehaviour
 {
+    //Race
     public static bool racing = false;
     public static int totalLaps = 1;
     public int timer = 3;
     public CheckPointController[] carsController;
+    //UI
+    public Text startText;
+    AudioSource audioSource;
+    public AudioClip count;
+    public AudioClip start;
+    public GameObject endPanel;
 
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("-----------------------------");
+        endPanel.SetActive(false);
+        audioSource = GetComponent<AudioSource>();
+        startText.gameObject.SetActive(false);
         InvokeRepeating("CountDown", 3, 1);
 
         GameObject[] cars = GameObject.FindGameObjectsWithTag("Car");
         carsController = new CheckPointController[cars.Length];
-        Debug.Log("Cars: " + cars.Length);
 
         for (int i = 0; i < cars.Length; i++)
         {
@@ -29,33 +39,44 @@ public class RaceController : MonoBehaviour
     {
         int finishedLap = 0;
         foreach (CheckPointController controller in carsController)
-        {
-
-            Debug.Log($"lap: {controller.lap} , total: {totalLaps}");
+        {                        
             if (controller.lap == totalLaps + 1) finishedLap++;
 
-            Debug.Log("-----------------------------");
-            Debug.Log($"lap: {controller.lap} , ukoñczone: {finishedLap}");
             if (finishedLap == carsController.Length && racing)
             {
+                endPanel.SetActive(true);
                 Debug.Log("FinishRace");
                 racing = false;
             }
         }
     }
-
+    
     void CountDown()
     {
+        startText.gameObject.SetActive(true);
         if (timer != 0)
         {
-            Debug.Log("Rozpoczêcie wyœcigu za: " + timer);
+            startText.text = timer.ToString();
+            audioSource.PlayOneShot(count);
             timer--;
         }
         else
         {
-            Debug.Log("Start!!!");
+            startText.text = "START!!!";
+            audioSource.PlayOneShot(start);
             racing = true;
             CancelInvoke("CountDown");
+            Invoke("HideStartText", 1);
         }
+    }
+
+    void HideStartText()
+    {
+        startText.gameObject.SetActive(false);
+    }
+
+    public void LoadScene(int index)
+    {
+        SceneManager.LoadScene(index);
     }
 }

@@ -8,7 +8,7 @@ public class DrivingScript : MonoBehaviour
     public float torque = 200; //moment obrotowy
     public float maxSteerAngle = 30; //maxymalny k¹t wychylenia
     public float maxBrakeTorque = 500; //moment hamowania
-    public float maxSpeed = 200; //max predkoœæ
+    public float maxSpeed = 400; //max predkoœæ
     public Rigidbody rb;
     public float currentSpeed; //aktualna prêdkoœæ
     public GameObject backLights;
