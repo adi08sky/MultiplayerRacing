@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Photon.Realtime;
+using Photon.Pun;
 
-public class RaceController : MonoBehaviour
+public class RaceController : MonoBehaviourPunCallbacks
 {
     //Race
     public static bool racing = false;
@@ -21,8 +23,12 @@ public class RaceController : MonoBehaviour
     public GameObject carPrefab;
     public Transform[] spawnPos;
     public int playerCount;
+    //Multi
+    public GameObject startRace;
+    public GameObject waitingText;
 
-    // Start is called before the first frame update
+    // OLD SINGLE START
+    /*
     void Start()
     {
         endPanel.SetActive(false);
@@ -50,20 +56,58 @@ public class RaceController : MonoBehaviour
         {
             carsController[i] = cars[i].GetComponent<CheckPointController>();
         }
+    }*/
+
+    void Start()
+    {
+        playerCount = PhotonNetwork.CurrentRoom.PlayerCount;
+        endPanel.SetActive(false);
+        audioSource = GetComponent<AudioSource>();
+        startText.gameObject.SetActive(false);
+        startRace.SetActive(false);
+        waitingText.SetActive(false);
+
+        int randomStartPosition = Random.Range(0, spawnPos.Length);
+        Vector3 startPos = spawnPos[randomStartPosition].position;
+        Quaternion startRot = spawnPos[randomStartPosition].rotation;
+        GameObject playerCar = null;
+
+        if (PhotonNetwork.IsConnected)
+        {
+            startPos = spawnPos[PhotonNetwork.CurrentRoom.PlayerCount - 1].position;
+            startRot = spawnPos[PhotonNetwork.CurrentRoom.PlayerCount - 1].rotation;
+            if (OnlinePlayer.LocalPlayerInstance == null)
+            {
+                playerCar = PhotonNetwork.Instantiate(carPrefab.name, startPos, startRot, 0);
+            }
+            if (PhotonNetwork.IsMasterClient)
+            {
+                startRace.SetActive(true);
+            }
+            else
+            {
+                waitingText.SetActive(true);
+            }
+        }
+        playerCar.GetComponent<DrivingScript>().enabled = true;
+        playerCar.GetComponent<PlayerController>().enabled = true;
     }
 
     void LateUpdate()
     {
         int finishedLap = 0;
-        foreach (CheckPointController controller in carsController)
-        {                        
-            if (controller.lap == totalLaps + 1) finishedLap++;
-
-            if (finishedLap == carsController.Length && racing)
+        if (racing)
+        {
+            foreach (CheckPointController controller in carsController)
             {
-                endPanel.SetActive(true);
-                Debug.Log("FinishRace");
-                racing = false;
+                if (controller.lap == totalLaps + 1) finishedLap++;
+
+                if (finishedLap == carsController.Length && racing)
+                {
+                    endPanel.SetActive(true);
+                    Debug.Log("FinishRace");
+                    racing = false;
+                }
             }
         }
     }
@@ -95,5 +139,27 @@ public class RaceController : MonoBehaviour
     public void LoadScene(int index)
     {
         SceneManager.LoadScene(index);
+    }
+
+    [PunRPC]
+    public void StartGame()
+    {
+        InvokeRepeating("CountDown", 3, 1);
+        startRace.SetActive(false);
+        waitingText.SetActive(false);
+        GameObject[] cars = GameObject.FindGameObjectsWithTag("Car");
+        carsController = new CheckPointController[cars.Length];
+        for (int i = 0; i < cars.Length; i++)
+        {
+            carsController[i] = cars[i].GetComponent<CheckPointController>();
+        }
+    }
+
+    public void BeginGame()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            photonView.RPC("StartGame", RpcTarget.All, null);
+        }
     }
 }

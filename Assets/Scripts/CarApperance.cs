@@ -23,7 +23,7 @@ public class CarApperance : MonoBehaviour
         {
             playerName = "Random " + playerNumber;
             carColor = new Color(Random.Range(0f, 255f) / 255, Random.Range(0f, 255f) / 255,
-            Random.Range(0f, 255f) / 255);
+            Random.Range(0f, 255f) / 255, 255);
         }
 
         nameText.text = playerName;

@@ -79,16 +79,16 @@ public class DrivingScript : MonoBehaviour
    {
         float gears = 5;
         float gearPerc = (1f / gears);
+        float speedPerc = Mathf.Abs(currentSpeed / maxSpeed);
         currentSpeed = rb.velocity.magnitude * 3;
-        float targetGearFactor = Mathf.InverseLerp(gearPerc * currentGear, gearPerc *(currentGear + 1), Mathf.Abs(currentSpeed / maxSpeed));
+        float targetGearFactor = Mathf.InverseLerp(gearPerc * currentGear, gearPerc *(currentGear + 1), speedPerc);
         currentGearPerc = Mathf.Lerp(currentGearPerc, targetGearFactor, Time.deltaTime * 5f);
         var gearsFactor = currentGear / gears;
         rpm = Mathf.Lerp(gearsFactor, 1, currentGearPerc);
-        float speedPerc = Mathf.Abs(currentSpeed / maxSpeed);
         float upperGear = (1 / gears) * (currentGear + 1);
         float downGear = (1 / gears) * currentGear;
         if (currentGear > 0 && speedPerc < downGear ) currentGear--;
-        if (currentGear > upperGear && (currentGear < (gears - 1))) currentGear++;
+        if (speedPerc > upperGear && (currentGear < (gears - 1))) currentGear++;
         float pitch = Mathf.Lerp(1, 6, rpm);
         engineSound.pitch = Mathf.Min(6, pitch) * 0.25f;
     }
