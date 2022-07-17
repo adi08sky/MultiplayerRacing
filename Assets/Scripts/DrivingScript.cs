@@ -18,6 +18,8 @@ public class DrivingScript : MonoBehaviour
     float currentGearPerc; //aktualny bieg wyra¿ony w procentach
     public AudioSource engineSound;
 
+    public GameObject cameraTarget;
+
     // Start is called before the first frame update
     void Start()
     {
