@@ -28,4 +28,9 @@ public class CameraController : MonoBehaviour
             positions[activePosition];
         }
     }
+    public void SetCameraProperties(GameObject car)
+    {
+        cam.Follow = car.GetComponent<DrivingScript>().rb.transform;
+        cam.LookAt = car.GetComponent<DrivingScript>().cameraTarget.transform;
+    }
 }

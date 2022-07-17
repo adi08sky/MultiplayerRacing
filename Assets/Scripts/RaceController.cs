@@ -17,6 +17,10 @@ public class RaceController : MonoBehaviour
     public AudioClip count;
     public AudioClip start;
     public GameObject endPanel;
+    //Players
+    public GameObject carPrefab;
+    public Transform[] spawnPos;
+    public int playerCount;
 
     // Start is called before the first frame update
     void Start()
@@ -26,6 +30,19 @@ public class RaceController : MonoBehaviour
         startText.gameObject.SetActive(false);
         InvokeRepeating("CountDown", 3, 1);
 
+        for (int i = 0; i < playerCount; i++)
+        {
+            GameObject car = Instantiate(carPrefab);
+            car.transform.position = spawnPos[i].position;
+            car.transform.rotation = spawnPos[i].rotation;
+            car.GetComponent<CarApperance>().playerNumber = i;
+            if (i == 0)
+            {
+                car.GetComponent<PlayerController>().enabled = true;
+                GameObject.FindObjectOfType<CameraController>().SetCameraProperties(car);
+            }
+        }
+        
         GameObject[] cars = GameObject.FindGameObjectsWithTag("Car");
         carsController = new CheckPointController[cars.Length];
 

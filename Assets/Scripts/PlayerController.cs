@@ -22,6 +22,13 @@ public class PlayerController : MonoBehaviour
         float steer = Input.GetAxis("Horizontal");
         float brake = Input.GetAxis("Jump");
 
+        if (checkPointController.lap == RaceController.totalLaps + 1) return;
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            ResetLayer();
+        }
+
         if (driveScript.rb.velocity.magnitude > 1 || !RaceController.racing) lastTimeMoving = Time.time;
 
         if (Time.time > lastTimeMoving + 4 || driveScript.rb.gameObject.transform.position.y
