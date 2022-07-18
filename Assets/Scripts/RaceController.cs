@@ -26,6 +26,7 @@ public class RaceController : MonoBehaviourPunCallbacks
     //Multi
     public GameObject startRace;
     public GameObject waitingText;
+    public RawImage mirror;
 
     // OLD SINGLE START
     /*
@@ -76,9 +77,17 @@ public class RaceController : MonoBehaviourPunCallbacks
         {
             startPos = spawnPos[PhotonNetwork.CurrentRoom.PlayerCount - 1].position;
             startRot = spawnPos[PhotonNetwork.CurrentRoom.PlayerCount - 1].rotation;
+
+            object[] instanceData = new object[4];
+            instanceData[0] = (string)PlayerPrefs.GetString("PlayerName");
+            instanceData[1] = PlayerPrefs.GetInt("Red");
+            instanceData[2] = PlayerPrefs.GetInt("Green");
+            instanceData[3] = PlayerPrefs.GetInt("Blue");
+
             if (OnlinePlayer.LocalPlayerInstance == null)
             {
-                playerCar = PhotonNetwork.Instantiate(carPrefab.name, startPos, startRot, 0);
+                playerCar = PhotonNetwork.Instantiate(carPrefab.name, startPos, startRot, 0, instanceData);
+                playerCar.GetComponent<CarApperance>().SetLocalPlayer();
             }
             if (PhotonNetwork.IsMasterClient)
             {
@@ -161,5 +170,10 @@ public class RaceController : MonoBehaviourPunCallbacks
         {
             photonView.RPC("StartGame", RpcTarget.All, null);
         }
+    }
+
+    public void SetMirror(Camera backCamera)
+    {
+        mirror.texture = backCamera.targetTexture;
     }
 }

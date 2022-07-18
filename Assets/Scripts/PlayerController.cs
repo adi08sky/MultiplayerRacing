@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
 
         if (checkPointController.lap == RaceController.totalLaps + 1) return;
 
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.Tab))
         {
             ResetLayer();
         }

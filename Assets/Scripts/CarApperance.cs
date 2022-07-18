@@ -10,8 +10,10 @@ public class CarApperance : MonoBehaviour
     public Color carColor;
     public Text nameText;
     public Renderer carRenderer;
+    public Camera backCamera;
 
-    void Start()
+    //Old Start - for local start
+    /*void Start()
     {
         if (playerNumber == 0)
         {
@@ -29,5 +31,26 @@ public class CarApperance : MonoBehaviour
         nameText.text = playerName;
         carRenderer.material.color = carColor;
         nameText.color = carColor;
+    }*/
+
+    public void SetNameAndColor(string name, Color color)
+    {
+        nameText.text = name;
+        carRenderer.material.color = color;
+        nameText.color = color;
+    }
+
+    public void SetLocalPlayer()
+    {
+        FindObjectOfType<CameraController>().SetCameraProperties(this.gameObject);
+        playerName = PlayerPrefs.GetString("PlayerName");
+        carColor = ColorCar.IntToColor(PlayerPrefs.GetInt("Red"), PlayerPrefs.GetInt("Green"), PlayerPrefs.GetInt("Blue"));
+        nameText.text = playerName;
+        carRenderer.material.color = carColor;
+        nameText.color = carColor;
+
+        RenderTexture rt = new RenderTexture(768, 256, 0);
+        backCamera.targetTexture = rt;
+        FindObjectOfType<RaceController>().SetMirror(backCamera);
     }
 }

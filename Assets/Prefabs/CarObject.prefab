@@ -205,7 +205,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 0.5
-  MaxDistance: 200
+  MaxDistance: 50
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
@@ -654,6 +654,7 @@ MonoBehaviour:
   carColor: {r: 0.030037642, g: 1, b: 0, a: 1}
   nameText: {fileID: 8557590273460986879}
   carRenderer: {fileID: 6990499914998887332}
+  backCamera: {fileID: 8557590271528942296}
 --- !u!1 &8557590272624154770
 GameObject:
   m_ObjectHideFlags: 0
