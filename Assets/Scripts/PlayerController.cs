@@ -24,9 +24,12 @@ public class PlayerController : MonoBehaviour
 
         if (checkPointController.lap == RaceController.totalLaps + 1) return;
 
-        if (Input.GetKeyDown(KeyCode.Tab))
+        if (Input.GetKeyDown(KeyCode.R))
         {
-            ResetLayer();
+            driveScript.rb.transform.position = checkPointController.lastPoint.transform.position + Vector3.up * 2;
+            driveScript.rb.transform.rotation = checkPointController.lastPoint.transform.rotation;
+            driveScript.rb.gameObject.layer = 6;
+            Invoke("ResetLayer", 3);
         }
 
         if (driveScript.rb.velocity.magnitude > 1 || !RaceController.racing) lastTimeMoving = Time.time;
