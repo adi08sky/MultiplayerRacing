@@ -17,7 +17,7 @@ public class RaceLauncher : MonoBehaviourPunCallbacks
 
     // Start is called before the first frame update
     void Awake()
-    {
+    {        
         PhotonNetwork.AutomaticallySyncScene = true;
         if (PlayerPrefs.HasKey("PlayerName")) playerName.text = PlayerPrefs.GetString("PlayerName");
     }
@@ -25,11 +25,6 @@ public class RaceLauncher : MonoBehaviourPunCallbacks
     public void SetName(string name)
     {
         PlayerPrefs.SetString("PlayerName", name);
-    }
-
-    public void StartRace()
-    {
-        SceneManager.LoadScene(0);
     }
 
     public override void OnConnectedToMaster()

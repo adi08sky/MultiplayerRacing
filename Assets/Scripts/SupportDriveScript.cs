@@ -6,7 +6,7 @@ public class SupportDriveScript : MonoBehaviour
 {
     Rigidbody rb;
     float lastTimeChecked;
-    public float antiRoll = 5000.0f;
+    public float antiRoll = 20000.0f;
 
     [Header("0 - lewe ko³o, 1 - prawe ko³o")]
     public WheelCollider[] frontWheels = new WheelCollider[2];

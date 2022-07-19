@@ -11,30 +11,24 @@ public class CarApperance : MonoBehaviour
     public Text nameText;
     public Renderer carRenderer;
     public Camera backCamera;
+    int carRegistartion;
+    bool registartionSet = false;
+    public CheckPointController checkPoint;
 
-    //Old Start - for local start
-    /*void Start()
+    private void LateUpdate()
     {
-        if (playerNumber == 0)
+        if (!registartionSet)
         {
-            playerName = PlayerPrefs.GetString("PlayerName");
-            carColor = ColorCar.IntToColor(PlayerPrefs.GetInt("Red"),
-            PlayerPrefs.GetInt("Green"), PlayerPrefs.GetInt("Blue"));
+            carRegistartion = Leaderboard.RegisterCar(playerName);
+            registartionSet = true;
+            return;
         }
-        else
-        {
-            playerName = "Random " + playerNumber;
-            carColor = new Color(Random.Range(0f, 255f) / 255, Random.Range(0f, 255f) / 255,
-            Random.Range(0f, 255f) / 255, 255);
-        }
-
-        nameText.text = playerName;
-        carRenderer.material.color = carColor;
-        nameText.color = carColor;
-    }*/
+        Leaderboard.SetPosition(carRegistartion, checkPoint.lap, checkPoint.checkPoint);
+    }
 
     public void SetNameAndColor(string name, Color color)
     {
+        playerName = name;
         nameText.text = name;
         carRenderer.material.color = color;
         nameText.color = color;

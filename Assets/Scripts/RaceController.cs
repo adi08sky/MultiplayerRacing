@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Photon.Realtime;
 using Photon.Pun;
+using Photon.Pun.UtilityScripts;
 
 public class RaceController : MonoBehaviourPunCallbacks
 {
@@ -19,6 +20,8 @@ public class RaceController : MonoBehaviourPunCallbacks
     public AudioClip count;
     public AudioClip start;
     public GameObject endPanel;
+    public Button restartBtn;
+    public Button nextLvlBtn;
     //Players
     public GameObject carPrefab;
     public Transform[] spawnPos;
@@ -28,36 +31,6 @@ public class RaceController : MonoBehaviourPunCallbacks
     public GameObject waitingText;
     public RawImage mirror;
 
-    // OLD SINGLE START
-    /*
-    void Start()
-    {
-        endPanel.SetActive(false);
-        audioSource = GetComponent<AudioSource>();
-        startText.gameObject.SetActive(false);
-        InvokeRepeating("CountDown", 3, 1);
-
-        for (int i = 0; i < playerCount; i++)
-        {
-            GameObject car = Instantiate(carPrefab);
-            car.transform.position = spawnPos[i].position;
-            car.transform.rotation = spawnPos[i].rotation;
-            car.GetComponent<CarApperance>().playerNumber = i;
-            if (i == 0)
-            {
-                car.GetComponent<PlayerController>().enabled = true;
-                GameObject.FindObjectOfType<CameraController>().SetCameraProperties(car);
-            }
-        }
-        
-        GameObject[] cars = GameObject.FindGameObjectsWithTag("Car");
-        carsController = new CheckPointController[cars.Length];
-
-        for (int i = 0; i < cars.Length; i++)
-        {
-            carsController[i] = cars[i].GetComponent<CheckPointController>();
-        }
-    }*/
 
     void Start()
     {
@@ -68,15 +41,15 @@ public class RaceController : MonoBehaviourPunCallbacks
         startRace.SetActive(false);
         waitingText.SetActive(false);
 
-        int randomStartPosition = Random.Range(0, spawnPos.Length);
-        Vector3 startPos = spawnPos[randomStartPosition].position;
-        Quaternion startRot = spawnPos[randomStartPosition].rotation;
+        //int randomStartPosition = Random.Range(0, spawnPos.Length);
+        //Vector3 startPos = spawnPos[PhotonNetwork.LocalPlayer.GetPlayerNumber()].position;
+        //Quaternion startRot = spawnPos[PhotonNetwork.LocalPlayer.GetPlayerNumber()].rotation;
         GameObject playerCar = null;
 
         if (PhotonNetwork.IsConnected)
         {
-            startPos = spawnPos[PhotonNetwork.CurrentRoom.PlayerCount - 1].position;
-            startRot = spawnPos[PhotonNetwork.CurrentRoom.PlayerCount - 1].rotation;
+            Vector3 startPos = spawnPos[PhotonNetwork.LocalPlayer.ActorNumber-1].position;
+            Quaternion startRot = spawnPos[PhotonNetwork.LocalPlayer.ActorNumber-1].rotation;
 
             object[] instanceData = new object[4];
             instanceData[0] = (string)PlayerPrefs.GetString("PlayerName");
@@ -113,14 +86,26 @@ public class RaceController : MonoBehaviourPunCallbacks
 
                 if (finishedLap == carsController.Length && racing)
                 {
-                    endPanel.SetActive(true);
-                    Debug.Log("FinishRace");
-                    racing = false;
+                    if (PhotonNetwork.IsMasterClient)
+                    {
+                        endPanel.SetActive(true);
+                        Debug.Log("FinishRace");
+                        racing = false;
+                    }
+                    else
+                    {
+                        endPanel.SetActive(true);
+                        nextLvlBtn.interactable = false;
+                        restartBtn.interactable = false;                    
+                        Debug.Log("FinishRace");
+                        racing = false;
+                    }
+
                 }
             }
         }
     }
-    
+
     void CountDown()
     {
         startText.gameObject.SetActive(true);
@@ -153,7 +138,7 @@ public class RaceController : MonoBehaviourPunCallbacks
     [PunRPC]
     public void StartGame()
     {
-        InvokeRepeating("CountDown", 3, 1);
+        InvokeRepeating("CountDown", 1, 1);
         startRace.SetActive(false);
         waitingText.SetActive(false);
         GameObject[] cars = GameObject.FindGameObjectsWithTag("Car");

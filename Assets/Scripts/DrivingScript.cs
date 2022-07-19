@@ -12,6 +12,8 @@ public class DrivingScript : MonoBehaviour
     public Rigidbody rb;
     public float currentSpeed; //aktualna prêdkoœæ
     public GameObject backLights;
+    public float nitroFuel = 3;
+    public GameObject nitroLights;
 
     public float rpm; //obroty na minutê
     public int currentGear = 1; //aktualny bieg
@@ -20,19 +22,7 @@ public class DrivingScript : MonoBehaviour
 
     public GameObject cameraTarget;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    public void Drive(float accel, float brake, float steer)
+    public void Drive(float accel, float brake, float steer, bool stop = false)
     {
         accel = Mathf.Clamp(accel, -1, 1);
         steer = Mathf.Clamp(steer, -1, 1) * maxSteerAngle;
@@ -53,8 +43,10 @@ public class DrivingScript : MonoBehaviour
 
         if (currentSpeed < maxSpeed)
         {
-            thrustTorque = accel * torque;
+            thrustTorque = accel * torque * Engine();
         }
+
+        if (stop) brake = 20000;
 
         foreach (WheelScript wheel in wheels)
         {
@@ -63,10 +55,11 @@ public class DrivingScript : MonoBehaviour
             if (wheel.frontWheel)
             {
                 wheel.wheelCollider.steerAngle = steer;
+                wheel.wheelCollider.brakeTorque = brake;
             }
             else
             {
-                wheel.wheelCollider.brakeTorque = brake;
+                wheel.wheelCollider.brakeTorque = brake * 100;
             }
             Quaternion quat;
             Vector3 position;
@@ -75,21 +68,51 @@ public class DrivingScript : MonoBehaviour
             wheel.wheel.transform.rotation = quat;
         }
     }
-    public void EngineSound()
-   {
+    public float Engine()
+    {
         float gears = 5;
         float gearPerc = (1f / gears);
         float speedPerc = Mathf.Abs(currentSpeed / maxSpeed);
         currentSpeed = rb.velocity.magnitude * 3;
-        float targetGearFactor = Mathf.InverseLerp(gearPerc * currentGear, gearPerc *(currentGear + 1), speedPerc);
+        float targetGearFactor = Mathf.InverseLerp(gearPerc * currentGear, gearPerc * (currentGear + 1), speedPerc);
         currentGearPerc = Mathf.Lerp(currentGearPerc, targetGearFactor, Time.deltaTime * 5f);
         var gearsFactor = currentGear / gears;
         rpm = Mathf.Lerp(gearsFactor, 1, currentGearPerc);
         float upperGear = (1 / gears) * (currentGear + 1);
         float downGear = (1 / gears) * currentGear;
-        if (currentGear > 0 && speedPerc < downGear ) currentGear--;
+        if (currentGear > 0 && speedPerc < downGear) currentGear--;
         if (speedPerc > upperGear && (currentGear < (gears - 1))) currentGear++;
         float pitch = Mathf.Lerp(1, 6, rpm);
-        engineSound.pitch = Mathf.Min(6, pitch) * 0.25f;
+        return Mathf.Min(6, pitch) * 0.2f;
+    }
+
+    public void EngineSound()
+    {
+        engineSound.pitch = Engine();
+    }
+
+    void Boost(float boostPower)
+    {
+        rb.AddForce(rb.gameObject.transform.forward * boostPower);
+    }
+    public void Nitro(bool on)
+    {
+        if (nitroFuel > 0 && on)
+        {
+            Boost(1000000);
+            nitroFuel -= 1f;
+            nitroFuel = Mathf.Clamp(nitroFuel, 0, 5);
+            nitroLights.SetActive(true);
+        }
+        else
+        {
+            Invoke("NitroLightsOff", 2);
+        }
+    }
+
+    public void NitroLightsOff()
+    {
+        nitroLights.SetActive(false);
+        CancelInvoke("NitroLightsOff");
     }
 }
