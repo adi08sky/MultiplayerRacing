@@ -99,7 +99,8 @@ public class DrivingScript : MonoBehaviour
     {
         if (nitroFuel > 0 && on)
         {
-            Boost(1000000);
+            CancelInvoke("NitroLightsOff");
+            Boost(500000);
             nitroFuel -= 1f;
             nitroFuel = Mathf.Clamp(nitroFuel, 0, 5);
             nitroLights.SetActive(true);
@@ -113,6 +114,5 @@ public class DrivingScript : MonoBehaviour
     public void NitroLightsOff()
     {
         nitroLights.SetActive(false);
-        CancelInvoke("NitroLightsOff");
     }
 }

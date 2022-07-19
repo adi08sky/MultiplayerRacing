@@ -7,7 +7,6 @@ public class PlayerController : MonoBehaviour
     DrivingScript driveScript;
     float lastTimeMoving = 0;
     CheckPointController checkPointController;
-    bool nitro = false;
 
     // Start is called before the first frame update
     void Start()
@@ -21,10 +20,14 @@ public class PlayerController : MonoBehaviour
     {
         float accel = Input.GetAxis("Vertical");
         float steer = Input.GetAxis("Horizontal");
-        float brake = Input.GetAxis("Jump"); 
+        float brake = Input.GetAxis("Jump");
 
-        nitro = Input.GetKeyDown(KeyCode.LeftShift);
-        driveScript.Nitro(nitro);
+        if (RaceController.racing)
+        {
+            bool nitro = Input.GetKeyDown(KeyCode.LeftShift);
+            driveScript.Nitro(nitro);
+        }
+
 
         if (checkPointController.lap == RaceController.totalLaps + 1)
         {
