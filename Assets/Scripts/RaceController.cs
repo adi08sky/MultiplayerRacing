@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using Photon.Realtime;
 using Photon.Pun;
 using Photon.Pun.UtilityScripts;
@@ -48,8 +47,8 @@ public class RaceController : MonoBehaviourPunCallbacks
 
         if (PhotonNetwork.IsConnected)
         {
-            Vector3 startPos = spawnPos[PhotonNetwork.LocalPlayer.ActorNumber-1].position;
-            Quaternion startRot = spawnPos[PhotonNetwork.LocalPlayer.ActorNumber-1].rotation;
+            Vector3 startPos = spawnPos[PhotonNetwork.LocalPlayer.ActorNumber - 1].position;
+            Quaternion startRot = spawnPos[PhotonNetwork.LocalPlayer.ActorNumber - 1].rotation;
 
             object[] instanceData = new object[4];
             instanceData[0] = (string)PlayerPrefs.GetString("PlayerName");
@@ -77,6 +76,15 @@ public class RaceController : MonoBehaviourPunCallbacks
 
     void LateUpdate()
     {
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            var players = PhotonNetwork.PlayerList;
+            for (int i = 1; i < players.Length; i++)
+            {
+                PhotonNetwork.CloseConnection(players[i]);
+            }
+        }
+
         int finishedLap = 0;
         if (racing)
         {
@@ -96,7 +104,7 @@ public class RaceController : MonoBehaviourPunCallbacks
                     {
                         endPanel.SetActive(true);
                         nextLvlBtn.interactable = false;
-                        restartBtn.interactable = false;                    
+                        restartBtn.interactable = false;
                         Debug.Log("FinishRace");
                         racing = false;
                     }
@@ -130,9 +138,9 @@ public class RaceController : MonoBehaviourPunCallbacks
         startText.gameObject.SetActive(false);
     }
 
-    public void LoadScene(int index)
+    public void LoadScene(string scene)
     {
-        SceneManager.LoadScene(index);
+        PhotonNetwork.LoadLevel(scene);
     }
 
     [PunRPC]

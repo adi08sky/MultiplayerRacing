@@ -6,7 +6,10 @@ public class SupportDriveScript : MonoBehaviour
 {
     Rigidbody rb;
     float lastTimeChecked;
-    public float antiRoll = 20000.0f;
+    public float antiRoll = 30000.0f;
+    public float downForce = 600.0f;
+    public GameObject centerOfMass;
+
 
     [Header("0 - lewe ko³o, 1 - prawe ko³o")]
     public WheelCollider[] frontWheels = new WheelCollider[2];
@@ -18,30 +21,13 @@ public class SupportDriveScript : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (transform.up.y > 0.5f || rb.velocity.magnitude > 1)
-        {
-            lastTimeChecked = Time.time;
-        }
-        if (Time.time > lastTimeChecked + 3)
-        {
-            TurnBackCar();
-        }
-    }
-
     void FixedUpdate()
     {
         HoldWheelOnGround(frontWheels);
         HoldWheelOnGround(backWheels);
+        AddDownForce();
     }
 
-    void TurnBackCar()
-    {
-        transform.position += Vector3.up;
-        transform.rotation = Quaternion.LookRotation(transform.forward);
-    }
     void HoldWheelOnGround(WheelCollider[] wheels)
     {
         WheelHit hit;
@@ -58,5 +44,10 @@ public class SupportDriveScript : MonoBehaviour
 
         if (groundedL) rb.AddForceAtPosition(wheels[0].transform.up * -antiRollForce, wheels[0].transform.position);
         if (groundedR) rb.AddForceAtPosition(wheels[1].transform.up * antiRollForce, wheels[1].transform.position);
+    }
+
+    void AddDownForce()
+    {
+        rb.AddForce(-rb.transform.up * downForce * rb.velocity.magnitude);
     }
 }

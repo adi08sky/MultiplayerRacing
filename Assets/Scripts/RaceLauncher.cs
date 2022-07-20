@@ -55,6 +55,7 @@ public class RaceLauncher : MonoBehaviourPunCallbacks
     {
         networkText.text = "Joined Room with " + PhotonNetwork.CurrentRoom.PlayerCount + "players.\n";
         PhotonNetwork.LoadLevel("Main");
+        PhotonNetwork.EnableCloseConnection = true;
     }
 
     public void ConnectNetwork()

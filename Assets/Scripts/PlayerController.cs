@@ -37,23 +37,15 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            driveScript.rb.transform.position = checkPointController.lastPoint.transform.position + Vector3.up * 2;
-            driveScript.rb.transform.rotation = checkPointController.lastPoint.transform.rotation;
-            driveScript.rb.freezeRotation = true;
-            driveScript.rb.freezeRotation = false;
-            driveScript.rb.gameObject.layer = 6;
-            Invoke("ResetLayer", 3);
+            ResetPosition();
         }
 
         if (driveScript.rb.velocity.magnitude > 1 || !RaceController.racing) lastTimeMoving = Time.time;
 
         if (Time.time > lastTimeMoving + 4 || driveScript.rb.gameObject.transform.position.y
-        < -5)
+        < -5) 
         {
-            driveScript.rb.transform.position = checkPointController.lastPoint.transform.position + Vector3.up * 2;
-            driveScript.rb.transform.rotation = checkPointController.lastPoint.transform.rotation;
-            driveScript.rb.gameObject.layer = 6;
-            Invoke("ResetLayer", 3);
+            RestorePosition();
         }
 
         if (!RaceController.racing) accel = 0;
@@ -64,5 +56,26 @@ public class PlayerController : MonoBehaviour
     void ResetLayer()
     {
         driveScript.rb.gameObject.layer = 0;
+    }
+
+    void ResetPosition()
+    {
+        driveScript.rb.transform.position = checkPointController.lastPoint.transform.position + Vector3.up * 2;
+        driveScript.rb.transform.rotation = checkPointController.lastPoint.transform.rotation;
+        driveScript.rb.freezeRotation = true;
+        driveScript.rb.velocity = new Vector3(0, 0, 0);
+        driveScript.rb.gameObject.layer = 6;
+        driveScript.rb.freezeRotation = false;
+        Invoke("ResetLayer", 2);
+    }
+
+    void RestorePosition()
+    {
+        driveScript.rb.transform.position = checkPointController.lastPoint.transform.position + Vector3.up * 2;
+        driveScript.rb.transform.rotation = checkPointController.lastPoint.transform.rotation;
+        driveScript.rb.freezeRotation = true;
+        driveScript.rb.gameObject.layer = 6;
+        driveScript.rb.freezeRotation = false;
+        Invoke("ResetLayer", 2);
     }
 }

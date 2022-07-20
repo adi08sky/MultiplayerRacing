@@ -22,6 +22,11 @@ public class DrivingScript : MonoBehaviour
 
     public GameObject cameraTarget;
 
+    [Range(0, 1)] public float forwardFriction = 0;
+    [Range(0, 1)] public float sidewaysFriction = 0;
+    [Range(0, 0.5f)] public float suspensionDistance = 0;
+    [Range(0, 0.1f)] public float suspensionoffset = 0;
+
     public void Drive(float accel, float brake, float steer, bool stop = false)
     {
         accel = Mathf.Clamp(accel, -1, 1);
@@ -46,7 +51,7 @@ public class DrivingScript : MonoBehaviour
             thrustTorque = accel * torque * Engine();
         }
 
-        if (stop) brake = 20000;
+        if (stop) brake = 20000000;
 
         foreach (WheelScript wheel in wheels)
         {
@@ -55,11 +60,10 @@ public class DrivingScript : MonoBehaviour
             if (wheel.frontWheel)
             {
                 wheel.wheelCollider.steerAngle = steer;
-                wheel.wheelCollider.brakeTorque = brake;
             }
             else
-            {
-                wheel.wheelCollider.brakeTorque = brake * 100;
+            {                
+                wheel.wheelCollider.brakeTorque = brake * 10000;
             }
             Quaternion quat;
             Vector3 position;

@@ -2073,8 +2073,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2086592546}
-        m_TargetAssemblyTypeName: RaceLauncher, Assembly-CSharp
-        m_MethodName: OnJoinedRoom
+        m_TargetAssemblyTypeName: Photon.Pun.MonoBehaviourPunCallbacks, PhotonUnityNetworking
+        m_MethodName: OnJoinedLobby
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
