@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DrivingScript : MonoBehaviour
 {
@@ -22,10 +23,13 @@ public class DrivingScript : MonoBehaviour
 
     public GameObject cameraTarget;
 
-    [Range(0, 1)] public float forwardFriction = 0;
-    [Range(0, 1)] public float sidewaysFriction = 0;
-    [Range(0, 0.5f)] public float suspensionDistance = 0;
-    [Range(0, 0.1f)] public float suspensionoffset = 0;
+    public Text nitroText;
+
+    private void Start()
+    {
+        nitroText = GameObject.FindGameObjectWithTag("Fuel").GetComponent<Text>();
+        nitroText.text = nitroFuel.ToString();
+    }
 
     public void Drive(float accel, float brake, float steer, bool stop = false)
     {
@@ -106,7 +110,7 @@ public class DrivingScript : MonoBehaviour
             CancelInvoke("NitroLightsOff");
             Boost(500000);
             nitroFuel -= 1f;
-            nitroFuel = Mathf.Clamp(nitroFuel, 0, 5);
+            ChangeFuelTekst();
             nitroLights.SetActive(true);
         }
         else
@@ -118,5 +122,10 @@ public class DrivingScript : MonoBehaviour
     public void NitroLightsOff()
     {
         nitroLights.SetActive(false);
+    }
+
+    public void ChangeFuelTekst()
+    {
+        nitroText.text = nitroFuel.ToString();
     }
 }
