@@ -1651,7 +1651,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6813257348742148500}
   - component: {fileID: 6813257348742148502}
-  - component: {fileID: 6813257348742148501}
   m_Layer: 0
   m_Name: BackCamera
   m_TagString: Untagged
@@ -1721,14 +1720,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &6813257348742148501
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6813257348742148507}
-  m_Enabled: 1
 --- !u!1 &6813257348911756499
 GameObject:
   m_ObjectHideFlags: 0
@@ -1876,7 +1867,6 @@ RectTransform:
   - {fileID: 6813257348911756492}
   - {fileID: 6813257348742148500}
   - {fileID: 6813257349225919900}
-  - {fileID: 422700056223779521}
   m_Father: {fileID: 6813257348462648632}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1915,7 +1905,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   antiRoll: 30000
   downForce: 600
-  centerOfMass: {fileID: 8330694877828306067}
+  centerOfMass: {fileID: 0}
   frontWheels:
   - {fileID: 8340549111303223803}
   - {fileID: 3581696906461953176}
@@ -1929,7 +1919,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6813257348937698882}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: a6e716893630f7b4093e902b2f70a9c5, type: 3}
@@ -1940,7 +1930,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 181
   DopplerLevel: 1
   MinDistance: 0.5
   MaxDistance: 50
@@ -1978,7 +1968,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
+      value: 0.5
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -2350,36 +2340,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &8330694877828306067
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 422700056223779521}
-  m_Layer: 0
-  m_Name: CenterOfMass
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &422700056223779521
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8330694877828306067}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.7, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 6813257348937698883}
-  m_RootOrder: 13
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8638300054104914846
 GameObject:
   m_ObjectHideFlags: 0

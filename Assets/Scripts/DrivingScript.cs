@@ -27,6 +27,7 @@ public class DrivingScript : MonoBehaviour
 
     private void Start()
     {
+        engineSound = GameObject.FindGameObjectWithTag("AudioSource").GetComponent<AudioSource>();
         nitroText = GameObject.FindGameObjectWithTag("Fuel").GetComponent<Text>();
         nitroText.text = nitroFuel.ToString();
     }
