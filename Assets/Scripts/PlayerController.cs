@@ -22,6 +22,11 @@ public class PlayerController : MonoBehaviour
         float steer = Input.GetAxis("Horizontal");
         float brake = Input.GetAxis("Jump");
 
+        if (!RaceController.racing)
+        {
+            driveScript.rb.velocity = new Vector3(0, 0, 0);
+        }
+
         if (RaceController.racing)
         {
             bool nitro = Input.GetKeyDown(KeyCode.LeftShift);

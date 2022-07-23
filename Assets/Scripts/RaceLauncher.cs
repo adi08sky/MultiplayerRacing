@@ -26,6 +26,7 @@ public class RaceLauncher : MonoBehaviourPunCallbacks
         PhotonNetwork.AutomaticallySyncScene = true;
         if (PlayerPrefs.HasKey("PlayerName")) playerName.text = PlayerPrefs.GetString("PlayerName");
         Cars[0].SetActive(true);
+        SetCar();
     }
 
     private void Update()

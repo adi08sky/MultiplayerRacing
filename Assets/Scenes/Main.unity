@@ -1484,7 +1484,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae7e1857a87f039408104c58cbfb9374, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  laps: 1
+  laps: 3
   timer: 3
   carsController:
   - {fileID: 0}
