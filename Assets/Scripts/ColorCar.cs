@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ColorCar : MonoBehaviour
 {
-    public Renderer rend;
+    public Renderer[] rend;
     public Slider redSlider;
     public Slider greenSlider;
     public Slider blueSlider;
@@ -17,7 +18,7 @@ public class ColorCar : MonoBehaviour
     void Start()
     {
         col = IntToColor(PlayerPrefs.GetInt("Red"), PlayerPrefs.GetInt("Green"), PlayerPrefs.GetInt("Blue"));
-        rend.material.color = col;
+        rend[0].material.color = col;
         redSlider.value = (int)(col.r * 255f);
         greenSlider.value = (int)(col.g * 255f);
         blueSlider.value = (int)(col.b * 255f);
@@ -42,7 +43,8 @@ public class ColorCar : MonoBehaviour
     void SetCarColor(int red, int green, int blue)
     {
         Color col = IntToColor(red, green, blue);
-        rend.material.color = col;
+        int playerCar = PlayerPrefs.GetInt("PlayerCar");
+        rend[playerCar].material.color = col;
         PlayerPrefs.SetInt("Red", red);
         PlayerPrefs.SetInt("Green", green);
         PlayerPrefs.SetInt("Blue", blue);

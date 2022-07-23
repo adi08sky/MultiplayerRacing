@@ -11,6 +11,7 @@ public class RaceController : MonoBehaviourPunCallbacks
     //Race
     public static bool racing = false;
     public static int totalLaps = 1;
+    public int laps = 1;
     public int timer = 3;
     public CheckPointController[] carsController;
     //UI
@@ -21,8 +22,9 @@ public class RaceController : MonoBehaviourPunCallbacks
     public GameObject endPanel;
     public Button restartBtn;
     public Button nextLvlBtn;
+    public Button menuBtn;
     //Players
-    public GameObject carPrefab;
+    public GameObject[] carPrefabs;
     public Transform[] spawnPos;
     public int playerCount;
     //Multi
@@ -33,6 +35,7 @@ public class RaceController : MonoBehaviourPunCallbacks
 
     void Start()
     {
+        totalLaps = laps;
         playerCount = PhotonNetwork.CurrentRoom.PlayerCount;
         endPanel.SetActive(false);
         audioSource = GetComponent<AudioSource>();
@@ -55,10 +58,11 @@ public class RaceController : MonoBehaviourPunCallbacks
             instanceData[1] = PlayerPrefs.GetInt("Red");
             instanceData[2] = PlayerPrefs.GetInt("Green");
             instanceData[3] = PlayerPrefs.GetInt("Blue");
+            string carName = carPrefabs[PlayerPrefs.GetInt("PlayerCar")].name;
 
             if (OnlinePlayer.LocalPlayerInstance == null)
             {
-                playerCar = PhotonNetwork.Instantiate(carPrefab.name, startPos, startRot, 0, instanceData);
+                playerCar = PhotonNetwork.Instantiate(carName, startPos, startRot, 0, instanceData);
                 playerCar.GetComponent<CarApperance>().SetLocalPlayer();
             }
             if (PhotonNetwork.IsMasterClient)
@@ -105,6 +109,7 @@ public class RaceController : MonoBehaviourPunCallbacks
                         endPanel.SetActive(true);
                         nextLvlBtn.interactable = false;
                         restartBtn.interactable = false;
+                        menuBtn.interactable = false;
                         Debug.Log("FinishRace");
                         racing = false;
                     }
@@ -168,5 +173,11 @@ public class RaceController : MonoBehaviourPunCallbacks
     public void SetMirror(Camera backCamera)
     {
         mirror.texture = backCamera.targetTexture;
+    }
+
+    public void Exit()
+    {
+        PhotonNetwork.Disconnect();
+        Application.Quit();
     }
 }

@@ -5,10 +5,15 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Photon.Realtime;
 using Photon.Pun;
+using UnityEngine.EventSystems;
 
 public class RaceLauncher : MonoBehaviourPunCallbacks
 {
     public InputField playerName;
+    public GameObject Buttons;
+    public GameObject Panel;
+    public GameObject[] Cars;
+    int currentCar = 0;
 
     byte maxPlayerPerRoom = 3;
     bool isConnecting;
@@ -20,11 +25,51 @@ public class RaceLauncher : MonoBehaviourPunCallbacks
     {        
         PhotonNetwork.AutomaticallySyncScene = true;
         if (PlayerPrefs.HasKey("PlayerName")) playerName.text = PlayerPrefs.GetString("PlayerName");
+        Cars[0].SetActive(true);
+    }
+
+    private void Update()
+    {
+        if (!EventSystem.current.IsPointerOverGameObject() && Input.GetKey(KeyCode.LeftControl))
+        {
+            Buttons.SetActive(false);
+            Panel.SetActive(false);
+        }
+        else if (!Input.GetKey(KeyCode.LeftControl))
+        {
+            Buttons.SetActive(true);
+            Panel.SetActive(true);
+        }
+    }
+
+    public void NextCar()
+    {
+        Cars[currentCar].SetActive(false);
+        currentCar++;
+        if (currentCar >= Cars.Length)
+            currentCar = 0;
+        Cars[currentCar].SetActive(true);
+        SetCar();
+    }
+
+    public void PreviousCar()
+    {
+        Cars[currentCar].SetActive(false);
+        currentCar--;
+        if (currentCar < 0)
+            currentCar = Cars.Length - 1;
+        Cars[currentCar].SetActive(true);
+        SetCar();
     }
 
     public void SetName(string name)
     {
         PlayerPrefs.SetString("PlayerName", name);
+    }
+
+    public void SetCar()
+    {
+        PlayerPrefs.SetInt("PlayerCar", currentCar);
     }
 
     public override void OnConnectedToMaster()
@@ -53,6 +98,7 @@ public class RaceLauncher : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
+        SetCar();
         networkText.text = "Joined Room with " + PhotonNetwork.CurrentRoom.PlayerCount + "players.\n";
         PhotonNetwork.LoadLevel("Main");
         PhotonNetwork.EnableCloseConnection = true;

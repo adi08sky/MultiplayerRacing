@@ -44,6 +44,13 @@ public class CheckPointController : MonoBehaviour
                 nextPoint++;
                 nextPoint = nextPoint % pointCount;
             }
+
+            if (thisPoint == 100)
+            {
+                lastPoint = other.gameObject;
+                lap++;
+                Debug.Log("Lap: " + lap);
+            }
         }
     }
 }
