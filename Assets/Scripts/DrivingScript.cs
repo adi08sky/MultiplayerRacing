@@ -104,6 +104,7 @@ public class DrivingScript : MonoBehaviour
     {
         rb.AddForce(rb.gameObject.transform.forward * boostPower);
     }
+
     public void Nitro(bool on)
     {
         if (nitroFuel > 0 && on)
