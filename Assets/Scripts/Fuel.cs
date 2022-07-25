@@ -9,7 +9,6 @@ public class Fuel : MonoBehaviour
     Color myColor;
     Color gray = new Color(0.5f, 0.5f, 0.5f, 0.5f);
 
-    // Start is called before the first frame update
     void Start()
     {
         rend = GetComponent<Renderer>();
@@ -18,7 +17,6 @@ public class Fuel : MonoBehaviour
         myColor = rend.material.color;
     }
 
-    // Update is called once per frame
     void Update()
     {
         transform.Rotate(new Vector3(0.4f, -0.4f, 0.4f));

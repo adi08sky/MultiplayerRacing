@@ -10,6 +10,7 @@ public class LeaderboardPanel : MonoBehaviour
     {
         Leaderboard.Reset();
     }
+
     void LateUpdate()
     {
         List<string> places = Leaderboard.GetPlaces();

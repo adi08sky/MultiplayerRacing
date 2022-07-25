@@ -44,9 +44,6 @@ public class RaceController : MonoBehaviourPunCallbacks
         startRace.SetActive(false);
         waitingText.SetActive(false);
 
-        //int randomStartPosition = Random.Range(0, spawnPos.Length);
-        //Vector3 startPos = spawnPos[PhotonNetwork.LocalPlayer.GetPlayerNumber()].position;
-        //Quaternion startRot = spawnPos[PhotonNetwork.LocalPlayer.GetPlayerNumber()].rotation;
         GameObject playerCar = null;
 
         if (PhotonNetwork.IsConnected)
@@ -101,7 +98,7 @@ public class RaceController : MonoBehaviourPunCallbacks
                     {
                         nextLvlBtn.interactable = lastRace ? false : true;
                         restartBtn.interactable = true;
-                        menuBtn.interactable = true;
+                        menuBtn.interactable = false;
                     }
                 }
             }

@@ -4,16 +4,13 @@ using UnityEngine;
 
 public class CarView : MonoBehaviour
 {
-    //Vector3 basePosition = new Vector3(-0.15f, 2.16f, -6.57f);
     Vector3 basePosition;
     bool isFirst = true;
     float zRot = 0, yRot = 0;
     Vector3 startPos;
-    Vector3 panel = new Vector3 (5f, 5f, 5f);
     Transform camTrans;
     private void OnEnable()
     {
-        //camTrans.localPosition = basePosition;
         camTrans = transform.GetChild(0);
         basePosition = camTrans.localPosition;
         isFirst = true;

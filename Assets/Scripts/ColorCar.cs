@@ -31,7 +31,6 @@ public class ColorCar : MonoBehaviour
         blueSliderText.text = blueSlider.value.ToString("n2");
     }
 
-    // Start is called before the first frame update
     public static Color IntToColor(int red, int green, int blue)
     {
         float r = (float)red / 255;

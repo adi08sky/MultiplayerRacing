@@ -12,11 +12,9 @@ public class CameraController : MonoBehaviour
     void Start()
     {
         if (positions.Length == 0) return;
-        cam.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset =
-        positions[activePosition];
+        cam.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset = positions[activePosition];
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (positions.Length == 0) return;
@@ -24,10 +22,10 @@ public class CameraController : MonoBehaviour
         {
             activePosition++;
             activePosition = activePosition % positions.Length;
-            cam.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset =
-            positions[activePosition];
+            cam.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset = positions[activePosition];
         }
     }
+
     public void SetCameraProperties(GameObject car)
     {
         cam.Follow = car.GetComponent<DrivingScript>().rb.transform;

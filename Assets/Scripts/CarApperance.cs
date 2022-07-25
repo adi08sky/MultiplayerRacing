@@ -39,6 +39,7 @@ public class CarApperance : MonoBehaviour
         FindObjectOfType<CameraController>().SetCameraProperties(this.gameObject);
         playerName = PlayerPrefs.GetString("PlayerName");
         carColor = ColorCar.IntToColor(PlayerPrefs.GetInt("Red"), PlayerPrefs.GetInt("Green"), PlayerPrefs.GetInt("Blue"));
+
         nameText.text = playerName;
         carRenderer.material.color = carColor;
         nameText.color = carColor;

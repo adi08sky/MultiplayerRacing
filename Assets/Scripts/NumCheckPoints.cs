@@ -5,7 +5,6 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class NumCheckPoints : MonoBehaviour
 {
-    // Start is called before the first frame update
     void Start()
     {
         Transform[] checkPoints = GetComponentsInChildren<Transform>();

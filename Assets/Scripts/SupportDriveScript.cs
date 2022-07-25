@@ -5,7 +5,6 @@ using UnityEngine;
 public class SupportDriveScript : MonoBehaviour
 {
     Rigidbody rb;
-    float lastTimeChecked;
     public float antiRoll = 30000.0f;
     public float downForce = 600.0f;
     public GameObject centerOfMass;
@@ -15,7 +14,6 @@ public class SupportDriveScript : MonoBehaviour
     public WheelCollider[] frontWheels = new WheelCollider[2];
     public WheelCollider[] backWheels = new WheelCollider[2];
 
-    // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();

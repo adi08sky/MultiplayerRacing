@@ -40,9 +40,9 @@ public class CheckPointController : MonoBehaviour
                 checkPoint = thisPoint;
                 nextPoint++;
                 nextPoint = nextPoint % pointCount;
-                GameObject[] list = GameObject.FindGameObjectsWithTag("CheckPoint");                            //Dev hack
-                hackNextPoint = list.Where( point => point.name == nextPoint.ToString()).FirstOrDefault();      //Dev hack
-                
+                GameObject[] hackPointlist = GameObject.FindGameObjectsWithTag("CheckPoint");                            //Development hack
+                hackNextPoint = hackPointlist.Where( point => point.name == nextPoint.ToString()).FirstOrDefault();      //Development hack
+
 
                 if (checkPoint == 0)
                 {

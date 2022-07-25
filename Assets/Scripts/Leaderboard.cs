@@ -13,6 +13,7 @@ public class Leaderboard
         board.Clear();
         carsRegistered = -1;
     }
+
     public static int RegisterCar(string name)
     {
         carsRegistered++;
@@ -40,6 +41,7 @@ public struct Car
 {
     public string name;
     public int position;
+
     public Car(string name, int position)
     {
         this.name = name;

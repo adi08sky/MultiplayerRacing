@@ -18,7 +18,7 @@ public class RaceLauncher : MonoBehaviourPunCallbacks
     byte maxPlayerPerRoom = 3;
     bool isConnecting;
     public Text networkText;
-    string gameVersion = "0.21";
+    string gameVersion = "1.0";
 
     // Start is called before the first frame update
     void Awake()
