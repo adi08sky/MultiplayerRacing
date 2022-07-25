@@ -925,6 +925,7 @@ MonoBehaviour:
   checkPoint: -1
   nextPoint: 0
   lastPoint: {fileID: 0}
+  hackNextPoint: {fileID: 0}
 --- !u!114 &1786875404412826346
 MonoBehaviour:
   m_ObjectHideFlags: 0

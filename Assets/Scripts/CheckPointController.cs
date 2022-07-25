@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class CheckPointController : MonoBehaviour
@@ -9,6 +10,7 @@ public class CheckPointController : MonoBehaviour
     int pointCount;
     public int nextPoint;
     public GameObject lastPoint;
+    public GameObject hackNextPoint;
 
     // Start is called before the first frame update
     void Start()
@@ -21,6 +23,7 @@ public class CheckPointController : MonoBehaviour
             if (checkpoints[i].name == "0")
             {
                 lastPoint = checkpoints[i];
+                hackNextPoint = checkpoints[i];
                 break;
             }
         }
@@ -35,14 +38,18 @@ public class CheckPointController : MonoBehaviour
             {
                 lastPoint = other.gameObject;
                 checkPoint = thisPoint;
+                nextPoint++;
+                nextPoint = nextPoint % pointCount;
+                GameObject[] list = GameObject.FindGameObjectsWithTag("CheckPoint");                            //Dev hack
+                hackNextPoint = list.Where( point => point.name == nextPoint.ToString()).FirstOrDefault();      //Dev hack
+                
 
                 if (checkPoint == 0)
                 {
                     lap++;
                     Debug.Log("Lap: " + lap);
                 }
-                nextPoint++;
-                nextPoint = nextPoint % pointCount;
+                
             }
 
             if (thisPoint == 100)

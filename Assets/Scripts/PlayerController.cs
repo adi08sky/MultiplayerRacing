@@ -45,6 +45,11 @@ public class PlayerController : MonoBehaviour
             ResetPosition();
         }
 
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            NextPosition();
+        }
+
         if (driveScript.rb.velocity.magnitude > 1 || !RaceController.racing) lastTimeMoving = Time.time;
 
         if (Time.time > lastTimeMoving + 4 || driveScript.rb.gameObject.transform.position.y
@@ -67,6 +72,17 @@ public class PlayerController : MonoBehaviour
     {
         driveScript.rb.transform.position = checkPointController.lastPoint.transform.position + Vector3.up * 2;
         driveScript.rb.transform.rotation = checkPointController.lastPoint.transform.rotation;
+        driveScript.rb.freezeRotation = true;
+        driveScript.rb.velocity = new Vector3(0, 0, 0);
+        driveScript.rb.gameObject.layer = 6;
+        driveScript.rb.freezeRotation = false;
+        Invoke("ResetLayer", 2);
+    }
+
+    void NextPosition()
+    {
+        driveScript.rb.transform.position = checkPointController.hackNextPoint.transform.position + Vector3.up * 2;
+        driveScript.rb.transform.rotation = checkPointController.hackNextPoint.transform.rotation;
         driveScript.rb.freezeRotation = true;
         driveScript.rb.velocity = new Vector3(0, 0, 0);
         driveScript.rb.gameObject.layer = 6;

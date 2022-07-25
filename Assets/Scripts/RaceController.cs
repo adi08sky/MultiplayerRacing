@@ -14,6 +14,7 @@ public class RaceController : MonoBehaviourPunCallbacks
     public int laps = 1;
     public int timer = 3;
     public CheckPointController[] carsController;
+    public bool lastRace;
     //UI
     public Text startText;
     AudioSource audioSource;
@@ -80,15 +81,6 @@ public class RaceController : MonoBehaviourPunCallbacks
 
     void LateUpdate()
     {
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            var players = PhotonNetwork.PlayerList;
-            for (int i = 1; i < players.Length; i++)
-            {
-                PhotonNetwork.CloseConnection(players[i]);
-            }
-        }
-
         int finishedLap = 0;
         if (racing)
         {
@@ -96,24 +88,21 @@ public class RaceController : MonoBehaviourPunCallbacks
             {
                 if (controller.lap == totalLaps + 1) finishedLap++;
 
-                if (finishedLap == carsController.Length && racing)
+                if (finishedLap == carsController.Length)
                 {
+                    endPanel.SetActive(true);
+                    nextLvlBtn.interactable = false;
+                    restartBtn.interactable = false;
+                    menuBtn.interactable = false;
+                    Debug.Log("FinishRace");
+                    racing = false;
+
                     if (PhotonNetwork.IsMasterClient)
                     {
-                        endPanel.SetActive(true);
-                        Debug.Log("FinishRace");
-                        racing = false;
+                        nextLvlBtn.interactable = lastRace ? false : true;
+                        restartBtn.interactable = true;
+                        menuBtn.interactable = true;
                     }
-                    else
-                    {
-                        endPanel.SetActive(true);
-                        nextLvlBtn.interactable = false;
-                        restartBtn.interactable = false;
-                        menuBtn.interactable = false;
-                        Debug.Log("FinishRace");
-                        racing = false;
-                    }
-
                 }
             }
         }
