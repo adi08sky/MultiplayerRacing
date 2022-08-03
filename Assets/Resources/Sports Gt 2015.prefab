@@ -1336,13 +1336,13 @@ MonoBehaviour:
   maxSteerAngle: 30
   maxBrakeTorque: 1000
   maxSpeed: 200
-  rb: {fileID: 4808204361360748609}
   currentSpeed: 0
-  backLights: {fileID: 4808204361181585565}
-  nitroFuel: 3
-  nitroLights: {fileID: 3440378901465094264}
   rpm: 0
   currentGear: 1
+  rb: {fileID: 4808204361360748609}
+  nitroFuel: 3
+  backLights: {fileID: 4808204361181585565}
+  nitroLights: {fileID: 3440378901465094264}
   engineSound: {fileID: 4808204361360748611}
   cameraTarget: {fileID: 4808204361644264414}
   nitroText: {fileID: 0}
